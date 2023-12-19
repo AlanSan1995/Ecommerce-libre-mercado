@@ -1,3 +1,4 @@
+// Funcion para trer categorias de forma asincrona
 
 const categoriesCall = async()=>{
     try {
@@ -9,21 +10,41 @@ const categoriesCall = async()=>{
     }
 }
 
+// Crea categorias en desktop
+
 const dropdownButton = document.getElementById('dropdownButton')
 
 dropdownButton.onclick = async()=>{
+    
+    const dropdown = document.getElementById('dropdown')
+    if (!dropdown.classList[1]) {
+        const categories = await categoriesCall()
+        dropdown.innerHTML=''
+        categories.forEach(category => {
+            dropdown.innerHTML += `<button>${category}</button>`
+        });
+    }
 
-    const categories = await categoriesCall()
     const dropdownButtonArrow = document.getElementById('dropdownButtonArrow')
     dropdownButtonArrow.classList.toggle('dropdown_button_arrow_show')
-    const dropdown = document.getElementById('dropdown')
-    dropdown.innerHTML=''
-    categories.forEach(category => {
-        dropdown.innerHTML += `<button>${category}</button>`
-    });
     dropdown.classList.toggle('dropdown_show')
-}   
+}
 
+// Crea categorias en mobile
+
+ const createCategoryList = async ()=>{
+    const categoryList = document.getElementById('categoryList')
+    const categories = await categoriesCall()
+        categoryList.innerHTML=''
+        categories.forEach(category => {
+            categoryList.innerHTML += `<button>${category}</button>`
+        });
+ }
+
+
+if (document.body.clientWidth <= 480 ) {
+    createCategoryList()
+}
 
 
 
