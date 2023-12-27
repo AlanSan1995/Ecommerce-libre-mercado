@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="./index.css" />
-    <link rel="stylesheet" href="./indexmobile.css">
+    <link rel="stylesheet" href="./indexmobile.css" />
+    <link rel="stylesheet" href="./main.css" />
   </head>
   <body>
     <header>
@@ -18,10 +19,13 @@
         <div class="dropdown_container">
           <button id="dropdownButton">
             All Category
-            <img id="dropdownButtonArrow" src="./assets/icons/expand_more.svg" alt="Arrow" />
+            <img
+              id="dropdownButtonArrow"
+              src="./assets/icons/expand_more.svg"
+              alt="Arrow"
+            />
           </button>
-          <div class="dropdown" id="dropdown">
-          </div>
+          <div class="dropdown" id="dropdown"></div>
         </div>
         <button>Search</button>
       </div>
@@ -47,15 +51,97 @@
           ></a
         >
       </nav>
-      <div class="category_list" id="categoryList">
-      </div>
+      <div class="category_list" id="categoryList"></div>
     </header>
     <main>
-
-
-
+      <section class="filter_section">
+        <span class="filter_separator"></span>
+        <div class="filter_categories">
+          <div class="categories_dropdown_container">
+            <button id="categoriesDropdownButton">
+              Category
+              <img
+                id="categoriesDropdownButtonArrow"
+                src="./assets/icons/expand_more.svg"
+                alt="Arrow"
+              />
+            </button>
+            <div class="categories_dropdown" id="categoriesDropdown"></div>
+          </div>
+        </div>
+      </section>
+      <section class="product_section">
+        <div class="product_bar">
+          <p>12,911 items in <b>Mobile accessory</b></p>
+          <div class="products_style_buttons">
+            <button class="products_style_button_card">
+              <img src="./assets/icons/productscardstyle.svg" alt="" />
+            </button>
+            <button class="products_style_button_list">
+              <img src="./assets/icons/productsliststyle.svg" alt="" />
+            </button>
+          </div>
+        </div>
+        <div class="product_list">
+          <div class="product_row">
+            <div class="product_row_img"><img src="https://acdn.mitiendanube.com/stores/236/748/products/g421-7ea454c1ab503bd3dc16827875493261-1024-1024.png" alt="" /></div>
+            <div class="product_row_content">
+              <h2>Motorola A22</h2>
+              <p class="product_row_price">$500.000</p>
+              <p class="product_row_description">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse
+                nisi alias deleniti placeat quisquam officia quidem nemo?
+                Dolore, quis, sequi ipsa aliquid voluptas vero temporibus
+                repellendus cumque adipisci incidunt quos!
+              </p>
+              <a href="">View details</a>
+            </div>
+          </div>
+          <div class="product_row">
+            <div class="product_row_img"><img src="https://acdn.mitiendanube.com/stores/236/748/products/g421-7ea454c1ab503bd3dc16827875493261-1024-1024.png" alt="" /></div>
+            <div class="product_row_content">
+              <h2>Motorola A22</h2>
+              <p class="product_row_price">$500.000</p>
+              <p class="product_row_description">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse
+                nisi alias deleniti placeat quisquam officia quidem nemo?
+                Dolore, quis, sequi ipsa aliquid voluptas vero temporibus
+                repellendus cumque adipisci incidunt quos!
+              </p>
+              <a href="">View details</a>
+            </div>
+          </div>
+          <div class="product_row">
+            <div class="product_row_img"><img src="https://acdn.mitiendanube.com/stores/236/748/products/g421-7ea454c1ab503bd3dc16827875493261-1024-1024.png" alt="" /></div>
+            <div class="product_row_content">
+              <h2>Motorola A22</h2>
+              <p class="product_row_price">$500.000</p>
+              <p class="product_row_description">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse
+                nisi alias deleniti placeat quisquam officia quidem nemo?
+                Dolore, quis, sequi ipsa aliquid voluptas vero temporibus
+                repellendus cumque adipisci incidunt quos!
+              </p>
+              <a href="">View details</a>
+            </div>
+          </div>
+          <div class="product_row">
+            <div class="product_row_img"><img src="https://acdn.mitiendanube.com/stores/236/748/products/g421-7ea454c1ab503bd3dc16827875493261-1024-1024.png" alt="" /></div>
+            <div class="product_row_content">
+              <h2>Motorola A22</h2>
+              <p class="product_row_price">$500.000</p>
+              <p class="product_row_description">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse
+                nisi alias deleniti placeat quisquam officia quidem nemo?
+                Dolore, quis, sequi ipsa aliquid voluptas vero temporibus
+                repellendus cumque adipisci incidunt quos!
+              </p>
+              <a href="">View details</a>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
-
     <footer>
       <section class="newsletter_section">
         <h3>Subscribe on our newsletter</h3>
@@ -90,7 +176,8 @@
                 ><img src="./assets/icons/linkedin.svg" alt="linkedin" />
               </a>
               <a href=""
-                ><img src="./assets/icons/instagram.svg" alt="instagram"/></a>
+                ><img src="./assets/icons/instagram.svg" alt="instagram"
+              /></a>
               <a href=""
                 ><img src="./assets/icons/youtube.svg" alt="youtube"
               /></a>
@@ -134,7 +221,6 @@
             /></a>
           </div>
         </div>
-
 
         <div class="copyright">
           <span>

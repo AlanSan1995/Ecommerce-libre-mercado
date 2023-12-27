@@ -46,6 +46,25 @@ if (document.body.clientWidth <= 480 ) {
     createCategoryList()
 }
 
+// filtro en categorias
+
+const categoriesDropdownButton = document.getElementById('categoriesDropdownButton')
+
+categoriesDropdownButton.onclick = async()=>{
+    
+    const dropdown = document.getElementById('categoriesDropdown')
+    if (!dropdown.classList[1]) {
+        const categories = await categoriesCall()
+        dropdown.innerHTML=''
+        categories.forEach(category => {
+            dropdown.innerHTML += `<button>${category}</button>`
+        });
+    }
+
+    const dropdownButtonArrow = document.getElementById('categoriesDropdownButtonArrow')
+    dropdownButtonArrow.classList.toggle('categories_dropdown_button_arrow_show')
+    dropdown.classList.toggle('categories_dropdown_show')
+}
 
 
 
