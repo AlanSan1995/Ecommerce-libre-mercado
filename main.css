@@ -93,36 +93,59 @@ main{
 .products_style_button_list{
     background: var(--background-primary-grey);
 }
+.products_style_button_list_active{
+
+    background: none;
+
+}
+
+
 .products_style_button_card{
     background: none;
 }
+.products_style_button_card_active { 
+
+    background: var(--background-primary-grey);
+
+}
 .product_list{
-    margin-top: 10px;
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
 .product_row{
+    width: 100%;
     display: flex;
     background: var(--background-white);
     border: 1px solid var(--background-primary-grey);
     padding: 20px;
-    margin: 5px 0;
     border-radius: 5px;
 }
 .product_row_img {
-    width: 50%;
-    aspect-ratio: 1/1;
-    overflow: hidden;
+    width: 200px;
     margin-right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
 }
 
 .product_row_img > img {
     max-width: 100%;
-    max-height:100% ;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+}
+.product_row_content{
+    flex: 1;
 }
 .product_row_content > h2{
     font-size: 18px;
     font-weight: 500;
     margin-bottom: 10px;
+    
 }
 .product_row_price {
     font-size: 20px;
@@ -139,3 +162,61 @@ main{
     color: var(--primary-color);
     font-weight: 500;
 }
+.product_card {
+    width: calc(100% / 3 - 52px);
+    background-color: var(--background-white);
+    border: 1px solid var(--background-primary-grey);
+    border-radius: 10px;
+    padding: 20px;
+
+}
+.product_card_img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% - 20px);
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    padding: 10px;
+}
+.product_card_img > img {
+    
+    max-width: 100%;
+    max-height:100% ;
+}
+.product_card_price {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+.product_card_content > h2{
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 5px;
+}
+.product_card_content > a {
+    text-decoration: none;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
