@@ -37,7 +37,7 @@ dropdownButton.onclick = async()=>{
     const categories = await categoriesCall()
         categoryList.innerHTML=''
         categories.forEach(category => {
-            categoryList.innerHTML += `<button>${category}</button>`
+            categoryList.innerHTML += `<button onclick='filterByCategory("${category.replace(/'/g, '`')}")'>${category}</button>`
         });
  }
 
@@ -46,26 +46,7 @@ if (document.body.clientWidth <= 480 ) {
     createCategoryList()
 }
 
-// filtro en categorias
-
-const categoriesDropdownButton = document.getElementById('categoriesDropdownButton')
-
-categoriesDropdownButton.onclick = async()=>{
-    
-    const dropdown = document.getElementById('categoriesDropdown')
-    if (!dropdown.classList[1]) {
-        const categories = await categoriesCall()
-        dropdown.innerHTML=''
-        categories.forEach(category => {
-            dropdown.innerHTML += `<button>${category}</button>`
-        });
-    }
-
-    const dropdownButtonArrow = document.getElementById('categoriesDropdownButtonArrow')
-    dropdownButtonArrow.classList.toggle('categories_dropdown_button_arrow_show')
-    dropdown.classList.toggle('categories_dropdown_show')
-}
-
+//Pintan las cards de los productos trayendo desde la api
 
 const productsCall = async (category = null)=>{
     try {
@@ -80,10 +61,10 @@ const productsCall = async (category = null)=>{
 const productCount = document.getElementById('productCount')
 
 
-const createRowProducts = async ()=>{
+const createRowProducts = async (category = null)=>{
     const productList = document.getElementById('productList')
     productList.innerHTML =''
-    const products = await productsCall()
+    const products = await productsCall(category)
     products.forEach(prod => {
         productList.innerHTML += `<div class="product_row" >
         <div class="product_row_img"><img src="${prod.image}" alt="" /></div>
@@ -101,10 +82,10 @@ const createRowProducts = async ()=>{
 }
 createRowProducts()
 
-const createCardProducts = async ()=>{
+const createCardProducts = async (category = null)=>{
     const productList = document.getElementById('productList')
     productList.innerHTML =''
-    const products = await productsCall()
+    const products = await productsCall(category)
     products.forEach(prod => {
         productList.innerHTML += `<div class="product_card">
         <div class="product_card_img"><img src="${prod.image}" alt="" /></div>
@@ -119,20 +100,50 @@ const createCardProducts = async ()=>{
 
 }
 
+// filtro en categorias
+
+let productsStyle = 'list'
+
+const  filterByCategory = async (category)=>{
+    if (productsStyle == 'list') {
+        createRowProducts(category.replace(/`/g, "'"))   
+    }else{
+        createCardProducts(category.replace(/`/g, "'"))
+    }
+}
+
+const categoriesDropdownButton = document.getElementById('categoriesDropdownButton')
+
+categoriesDropdownButton.onclick = async()=>{
+    const dropdown = document.getElementById('categoriesDropdown')
+    if (!dropdown.classList[1]) {
+        const categories = await categoriesCall()
+        dropdown.innerHTML=''
+        categories.forEach(category => {
+            console.log(category.split(' ').join('%20'));
+
+            dropdown.innerHTML += `<button onclick='filterByCategory("${category.replace(/'/g, '`')}")'>${category}</button>`
+        });
+    }
+    const dropdownButtonArrow = document.getElementById('categoriesDropdownButtonArrow')
+    dropdownButtonArrow.classList.toggle('categories_dropdown_button_arrow_show')
+    dropdown.classList.toggle('categories_dropdown_show')
+}
+
 const productsStyleButtonCard = document.getElementById('productsStyleButtonCard')
 
 const productsStyleButtonList = document.getElementById('productsStyleButtonList')
 
-
-
 productsStyleButtonCard.onclick = async ()=>{
     await createCardProducts()
+    productsStyle = 'card'
     productsStyleButtonCard.classList.toggle('products_style_button_card_active')
     productsStyleButtonList.classList.toggle('products_style_button_list_active')
 }
 
 productsStyleButtonList.onclick =async ()=>{
     await createRowProducts()
+    productsStyle = 'list'
     productsStyleButtonCard.classList.toggle('products_style_button_card_active')
     productsStyleButtonList.classList.toggle('products_style_button_list_active')
 }
