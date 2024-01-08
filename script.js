@@ -74,7 +74,7 @@ const createRowProducts = async (category = null)=>{
           <p class="product_row_description">
             ${prod.description}
           </p>
-          <a href="">View details</a>
+          <button>Add to cart</button>
         </div>
       </div>`
     });
@@ -92,12 +92,11 @@ const createCardProducts = async (category = null)=>{
         <div class="product_card_content">
           <p class="product_card_price">$${prod.price}</p>
           <h2>${prod.title}</h2>
-          <a href="">View details</a>
+          <button>Add to cart</button>
         </div>
       </div>`
     });
     productCount.innerHTML = `${products.length} items in <b>Mobile accessory</b>`
-
 }
 
 // filtro en categorias
@@ -147,6 +146,42 @@ productsStyleButtonList.onclick =async ()=>{
     productsStyleButtonCard.classList.toggle('products_style_button_card_active')
     productsStyleButtonList.classList.toggle('products_style_button_list_active')
 }
+
+//
+
+let cartProducts = localStorage.getItem('cardProducts') || []
+
+const createCartProducts = ()=>{
+    const cartProducts = document.getElementById('cartProducts')
+    cartProducts.innerHTML = ''
+    cartProducts.forEach(prod => {
+        cartProducts.innerHTML += `
+        <div class="cart_product_card">
+                <div class="cart_product_info">
+                  <div class="cart_product_img">
+                    <img
+                      src="${prod.image}"
+                      alt=""
+                    />
+                  </div>
+                  <div class="cart_product_title">
+                    <h3>${prod.title}</h3>
+                    <button>Remove</button>
+                  </div>
+                </div>
+                <div class="cart_product_pricing">
+                  <p>$${prod.price}</p>
+                  <div class="cart_product_counter">
+                    <button>-</button>
+                    <span>3</span>
+                    <button>+</button>
+                  </div>
+                </div>
+              </div>
+        `
+    });
+}
+createCartProducts()
 
 
 
