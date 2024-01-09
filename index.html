@@ -97,46 +97,23 @@
         <h3>My cart</h3>
         <div class="cart_container">
           <div class="cart_product_container">
-            <div class="cart_products" id="cartProducts">
-              <div class="cart_product_card">
-                <div class="cart_product_info">
-                  <div class="cart_product_img">
-                    <img
-                      src="https://fakestoreapi.com/img/61pHAEJ4NML._AC_UX679_.jpg"
-                      alt=""
-                    />
-                  </div>
-                  <div class="cart_product_title">
-                    <h3>titulo</h3>
-                    <button>Remove</button>
-                  </div>
-                </div>
-                <div class="cart_product_pricing">
-                  <p>$999</p>
-                  <div class="cart_product_counter">
-                    <button>-</button>
-                    <span>3</span>
-                    <button>+</button>
-                  </div>
-                </div>
-              </div>
-              <span class="cart_separator"></span>
+            <div class="cart_products" id="cartProducts"> 
             </div>
             <div class="cart_product_footer">
-              <button>Remove all</button>
+              <button id="removeAllCart">Remove all</button>
             </div>
           </div>
           <div class="cart_checkout">
             <div class="cart_checkout_subtotal">
               <p>SubTotal:</p>
-              <span>$999</span>
+              <span id="cartSubtotal">$999</span>
             </div>
             <span class="cart_separator"></span>
             <div class="cart_checkout_total">
               <p>Total:</p>
-              <span>$999</span>
+              <span id="cartTotal">$999</span>
             </div>
-            <button>Checkout</button>
+            <button id="finishSale">Checkout</buttoncç>
           </div>
         </div>
       </section>
@@ -228,7 +205,7 @@
         </div>
       </section>
     </footer>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./script.js"></script>
   </body>
 </html>

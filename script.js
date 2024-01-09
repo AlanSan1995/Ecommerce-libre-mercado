@@ -41,12 +41,23 @@ dropdownButton.onclick = async()=>{
         });
  }
 
-
 if (document.body.clientWidth <= 480 ) {
     createCategoryList()
 }
 
 //Pintan las cards de los productos trayendo desde la api
+
+let cartProducts = JSON.parse(localStorage.getItem('cartProducts')) || []
+
+const addProductToCart = async (pid)=>{
+    if (!cartProducts.some((prod)=>prod.id == pid )) {
+        const response = await fetch(`https://fakestoreapi.com/products/${pid}`)
+        const data = await response.json()
+        cartProducts.push(data)   
+    }
+    localStorage.setItem('cartProducts',JSON.stringify(cartProducts))
+    createCart()
+}
 
 const productsCall = async (category = null)=>{
     try {
@@ -74,7 +85,7 @@ const createRowProducts = async (category = null)=>{
           <p class="product_row_description">
             ${prod.description}
           </p>
-          <button>Add to cart</button>
+          <button onclick="addProductToCart('${prod.id}')">Add to cart</button>
         </div>
       </div>`
     });
@@ -92,7 +103,7 @@ const createCardProducts = async (category = null)=>{
         <div class="product_card_content">
           <p class="product_card_price">$${prod.price}</p>
           <h2>${prod.title}</h2>
-          <button>Add to cart</button>
+          <button onclick="addProductToCart(${prod})" >Add to cart</button>
         </div>
       </div>`
     });
@@ -149,13 +160,34 @@ productsStyleButtonList.onclick =async ()=>{
 
 //
 
-let cartProducts = localStorage.getItem('cardProducts') || []
+
+
+
+const deleteProductFromCart = (pid)=>{
+    cartProducts = cartProducts.filter((prod)=>prod.id != pid)
+    localStorage.setItem('cartProducts',JSON.stringify(cartProducts))
+    createCart()
+}
+const deleteAllProductFromCart = ()=>{
+    cartProducts = []
+    localStorage.setItem('cartProducts',JSON.stringify(cartProducts))
+    createCart()
+}
+
+const removeAllCart = document.getElementById('removeAllCart')
+
+removeAllCart.onclick = deleteAllProductFromCart
+
+const cartProductsContainer = document.getElementById('cartProducts')
+
+const cartSubtotal = document.getElementById('cartSubtotal')
+
+const cartTotal = document.getElementById('cartTotal')
 
 const createCartProducts = ()=>{
-    const cartProducts = document.getElementById('cartProducts')
-    cartProducts.innerHTML = ''
+    cartProductsContainer.innerHTML = ''
     cartProducts.forEach(prod => {
-        cartProducts.innerHTML += `
+        cartProductsContainer.innerHTML += `
         <div class="cart_product_card">
                 <div class="cart_product_info">
                   <div class="cart_product_img">
@@ -166,22 +198,68 @@ const createCartProducts = ()=>{
                   </div>
                   <div class="cart_product_title">
                     <h3>${prod.title}</h3>
-                    <button>Remove</button>
+                    <button onclick='deleteProductFromCart(${prod.id})' >Remove</button>
                   </div>
                 </div>
                 <div class="cart_product_pricing">
-                  <p>$${prod.price}</p>
-                  <div class="cart_product_counter">
-                    <button>-</button>
-                    <span>3</span>
-                    <button>+</button>
-                  </div>
+                    <p>$${prod.price}</p>
+                    <div class="cart_product_counter">
+                        <button>-</button>
+                        <span>3</span>
+                        <button>+</button>
+                    </div>
                 </div>
+
               </div>
+            <span class="cart_separator"></span> 
         `
+     
     });
+    cartSubtotal.innerHTML = cartProducts.reduce((acc,prod)=>acc + prod.price,0)
+    cartTotal.innerHTML = cartProducts.reduce((acc,prod)=>acc + prod.price,0)
 }
-createCartProducts()
+
+const createEmptyCart= ()=>{
+    cartProductsContainer.innerHTML = `<div class="cart_empty">
+    <img src="./assets/img/bolsas-de-compra.png" alt="Blsa de compras">
+    <p>¡Empieza un carrito de compras!</p>
+  </div> 
+  <span class="cart_separator"></span>`
+  cartSubtotal.innerHTML = 0
+  cartTotal.innerHTML = 0
+}
+
+const createCart = ()=>{
+    if (cartProducts.length == 0) {
+        return createEmptyCart()
+    }
+    createCartProducts()
+}
+createCart()
+
+const finishSale = document.getElementById('finishSale')
+
+
+finishSale.onclick = ()=>{
+    if (cartProducts.length == 0) {
+        return Swal.fire({
+            title: "Error en su compra",
+            text: "No puede finalizar su compra, si no agrega productos al carrito",
+            icon: "error"
+          });
+    }
+    Swal.fire({
+        title: "Compra realizada con exito",
+        text: `finalizo su compra con un total de: $${cartProducts.reduce((acc,prod)=>acc + prod.price,0)}`,
+        icon: "success"
+      });
+    deleteAllProductFromCart()
+}
+
+
+
+
+
 
 
 
