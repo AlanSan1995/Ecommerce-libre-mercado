@@ -50,13 +50,27 @@ if (document.body.clientWidth <= 480 ) {
 let cartProducts = JSON.parse(localStorage.getItem('cartProducts')) || []
 
 const addProductToCart = async (pid)=>{
-    if (!cartProducts.some((prod)=>prod.id == pid )) {
+    const productButton = document.getElementById(`productButton${pid}`)
+    productButton.disabled = true
+    if (!cartProducts.some((elem)=>elem.product.id == pid )) {
         const response = await fetch(`https://fakestoreapi.com/products/${pid}`)
         const data = await response.json()
-        cartProducts.push(data)   
+        cartProducts.push({
+            quantity:1,
+            product : data
+        })   
+    }else{
+        cartProducts.map((elem)=>{
+
+            if (elem.product.id == pid) {
+                elem.quantity += 1
+            }
+            return elem
+        })
     }
     localStorage.setItem('cartProducts',JSON.stringify(cartProducts))
     createCart()
+    productButton.disabled = false
 }
 
 const productsCall = async (category = null)=>{
@@ -85,7 +99,7 @@ const createRowProducts = async (category = null)=>{
           <p class="product_row_description">
             ${prod.description}
           </p>
-          <button onclick="addProductToCart('${prod.id}')">Add to cart</button>
+          <button id="productButton${prod.id}" onclick="addProductToCart('${prod.id}')">Add to cart</button>
         </div>
       </div>`
     });
@@ -103,7 +117,7 @@ const createCardProducts = async (category = null)=>{
         <div class="product_card_content">
           <p class="product_card_price">$${prod.price}</p>
           <h2>${prod.title}</h2>
-          <button onclick="addProductToCart(${prod})" >Add to cart</button>
+          <button id="productButton${prod.id}" onclick="addProductToCart(${prod})" >Add to cart</button>
         </div>
       </div>`
     });
@@ -160,11 +174,8 @@ productsStyleButtonList.onclick =async ()=>{
 
 //
 
-
-
-
 const deleteProductFromCart = (pid)=>{
-    cartProducts = cartProducts.filter((prod)=>prod.id != pid)
+    cartProducts = cartProducts.filter((elem)=>elem.product.id != pid)
     localStorage.setItem('cartProducts',JSON.stringify(cartProducts))
     createCart()
 }
@@ -184,39 +195,62 @@ const cartSubtotal = document.getElementById('cartSubtotal')
 
 const cartTotal = document.getElementById('cartTotal')
 
+const addQuantity = (quantityid,pid)=>{
+    cartProducts = cartProducts.map((elem)=>{
+        if (elem.product.id == pid) {
+            elem.quantity += 1
+        }
+        return elem
+    })
+    localStorage.setItem('cartProducts',JSON.stringify(cartProducts))
+    createCart()
+}
+const removeQuantity = (quantityid,pid)=>{
+    cartProducts = cartProducts.map((elem)=>{
+        if (elem.product.id == pid) {
+            if (elem.quantity > 1 ) {
+                elem.quantity -= 1
+            }
+        }
+        return elem
+    })
+    localStorage.setItem('cartProducts',JSON.stringify(cartProducts))
+    createCart()
+}
+
+
 const createCartProducts = ()=>{
     cartProductsContainer.innerHTML = ''
-    cartProducts.forEach(prod => {
+    cartProducts.forEach(elem => {
         cartProductsContainer.innerHTML += `
         <div class="cart_product_card">
                 <div class="cart_product_info">
                   <div class="cart_product_img">
                     <img
-                      src="${prod.image}"
+                      src="${elem.product.image}"
                       alt=""
                     />
                   </div>
                   <div class="cart_product_title">
-                    <h3>${prod.title}</h3>
-                    <button onclick='deleteProductFromCart(${prod.id})' >Remove</button>
+                    <h3>${elem.product.title}</h3>
+                    <button onclick='deleteProductFromCart(${elem.product.id})' >Remove</button>
                   </div>
                 </div>
                 <div class="cart_product_pricing">
-                    <p>$${prod.price}</p>
+                    <p>$${elem.product.price}</p>
                     <div class="cart_product_counter">
-                        <button>-</button>
-                        <span>3</span>
-                        <button>+</button>
+                        <button onclick="removeQuantity('quantity${elem.product.id}',${elem.product.id})">-</button>
+                        <span id="quantity${elem.product.id}">${elem.quantity}</span>
+                        <button onclick="addQuantity('quantity${elem.product.id}',${elem.product.id})">+</button>
                     </div>
                 </div>
-
               </div>
             <span class="cart_separator"></span> 
         `
      
     });
-    cartSubtotal.innerHTML = cartProducts.reduce((acc,prod)=>acc + prod.price,0)
-    cartTotal.innerHTML = cartProducts.reduce((acc,prod)=>acc + prod.price,0)
+    cartSubtotal.innerHTML = cartProducts.reduce((acc,elem)=>acc + elem.quantity * elem.product.price,0).toFixed(2)
+    cartTotal.innerHTML = cartProducts.reduce((acc,elem)=>acc + elem.quantity * elem.product.price,0).toFixed(2)
 }
 
 const createEmptyCart= ()=>{
@@ -250,7 +284,7 @@ finishSale.onclick = ()=>{
     }
     Swal.fire({
         title: "Compra realizada con exito",
-        text: `finalizo su compra con un total de: $${cartProducts.reduce((acc,prod)=>acc + prod.price,0)}`,
+        text: `finalizo su compra con un total de: $${cartProducts.reduce((acc,elem)=>acc + elem.quantity * elem.product.price,0).toFixed(2)}`,
         icon: "success"
       });
     deleteAllProductFromCart()
