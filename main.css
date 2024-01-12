@@ -192,10 +192,12 @@ main{
     font-weight: 400;
     margin-bottom: 5px;
 }
-.product_card_content > a {
+.product_card_content > button {
     text-decoration: none;
     color: var(--primary-color);
     font-weight: 500;
+    border: 0;
+    background: none;
 }
 .cart_section > h3{
     color: var(--text-primary-dark);
