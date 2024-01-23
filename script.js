@@ -144,8 +144,6 @@ categoriesDropdownButton.onclick = async()=>{
         const categories = await categoriesCall()
         dropdown.innerHTML=''
         categories.forEach(category => {
-            console.log(category.split(' ').join('%20'));
-
             dropdown.innerHTML += `<button onclick='filterByCategory("${category.replace(/'/g, '`')}")'>${category}</button>`
         });
     }
@@ -195,7 +193,7 @@ const cartSubtotal = document.getElementById('cartSubtotal')
 
 const cartTotal = document.getElementById('cartTotal')
 
-const addQuantity = (quantityid,pid)=>{
+const addQuantity = (pid)=>{
     cartProducts = cartProducts.map((elem)=>{
         if (elem.product.id == pid) {
             elem.quantity += 1
@@ -205,7 +203,7 @@ const addQuantity = (quantityid,pid)=>{
     localStorage.setItem('cartProducts',JSON.stringify(cartProducts))
     createCart()
 }
-const removeQuantity = (quantityid,pid)=>{
+const removeQuantity = (pid)=>{
     cartProducts = cartProducts.map((elem)=>{
         if (elem.product.id == pid) {
             if (elem.quantity > 1 ) {
@@ -239,9 +237,9 @@ const createCartProducts = ()=>{
                 <div class="cart_product_pricing">
                     <p>$${elem.product.price}</p>
                     <div class="cart_product_counter">
-                        <button onclick="removeQuantity('quantity${elem.product.id}',${elem.product.id})">-</button>
-                        <span id="quantity${elem.product.id}">${elem.quantity}</span>
-                        <button onclick="addQuantity('quantity${elem.product.id}',${elem.product.id})">+</button>
+                        <button onclick="removeQuantity(${elem.product.id})">-</button>
+                        <span>${elem.quantity}</span>
+                        <button onclick="addQuantity(${elem.product.id})">+</button>
                     </div>
                 </div>
               </div>
@@ -274,7 +272,7 @@ createCart()
 const finishSale = document.getElementById('finishSale')
 
 
-finishSale.onclick = ()=>{
+finishSale.onclick = async ()=>{
     if (cartProducts.length == 0) {
         return Swal.fire({
             title: "Error en su compra",
@@ -282,11 +280,39 @@ finishSale.onclick = ()=>{
             icon: "error"
           });
     }
-    Swal.fire({
-        title: "Compra realizada con exito",
-        text: `finalizo su compra con un total de: $${cartProducts.reduce((acc,elem)=>acc + elem.quantity * elem.product.price,0).toFixed(2)}`,
-        icon: "success"
+    const { value: formValues } = await Swal.fire({
+        title: "Rellena el formulario para terminar la compra",
+        html: `
+            <input id="swal-input1" placeholder="Nombre" class="swal2-input">
+            <input id="swal-input2" placeholder="Email" class="swal2-input" type="email" >
+            <input id="swal-input3" placeholder="Celular" class="swal2-input" type="number">
+        `,
+        focusConfirm: false,
+        preConfirm: () => {
+          return {
+            name:document.getElementById("swal-input1").value,
+            email:document.getElementById("swal-input2").value,
+            phone:document.getElementById("swal-input3").value
+          }
+        }
       });
+      if (formValues.name != "" || formValues.email != "" || formValues.phone != "") {
+        Swal.fire({
+            icon: "success",
+            title: "Excelete",
+            html: `<h3>Su compra fue realizada:</h3>
+            <p>Total de compra: ${cartProducts.reduce((acc,elem)=>acc + elem.quantity * elem.product.price,0).toFixed(2)} </p>
+            <p>Su ticket se a: ${formValues.email}</p>`,
+            footer: `<p>En caso de error en la transaccion el enviaremos un mensaje a ${formValues.phone}</p>`
+          });
+
+        }else{
+        return Swal.fire({
+            title: "Error en su compra",
+            text: "Debe rellenar todos los campos del formulario",
+            icon: "error"
+          });
+      }
     deleteAllProductFromCart()
 }
 
